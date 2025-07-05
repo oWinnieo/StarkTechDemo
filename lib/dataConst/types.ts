@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 export interface StockInfoItem {
   industry_category: string;
@@ -7,6 +7,15 @@ export interface StockInfoItem {
   type: string;
   date: string;
 }
+
+export type DataItem = {
+    country: string;
+    date: string;
+    revenue: number;
+    revenue_month: number;
+    revenue_year: number;
+    stock_id: string;
+};
 
 export interface StockInfoResponse {
   msg: string;
@@ -48,18 +57,11 @@ export type FetchDataParams = {
 };
 
 
-export type DataItem = {
-    country: string;
-    date: string;
-    revenue: number;
-    revenue_month: number;
-    revenue_year: number;
-    stock_id: string;
-};
+
 
 export type EnhancedDataItem = DataItem & {
-    revenueMonthThisYear: string;
-    revenueMonthGrowthRageByYear: number;
+    revenueMonthThisYear?: string;
+    revenueMonthGrowthRageByYear?: number;
 };
 
 

@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { formatToThousandsWithCommas } from '@lib/util/formatter';
 import { fetchStockData } from '@lib/util/getData';
 import { BasicDatePicker } from '@/app/components/compDatePicker/compDatePicker'
@@ -18,7 +18,6 @@ import {
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/CheckCircle';
 import dayjs, { Dayjs } from 'dayjs';
-import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useStore, SearchState } from '@store/useStore';
 import './compRevenue.scss'
@@ -97,11 +96,12 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
     useEffect(() => {
         dateValidation({ startDate, endDate })
     }, [startDate, endDate])
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         setLoading(true)
         // setData([])
         // 
-        const resThisYear = await fetchStockData({
+        // wtest check
+        const resThisYear = await fetchStockData<DataItem>({
             dataset: 'TaiwanStockMonthRevenue',
             data_id: id,
             start_date: startDate?.format('YYYY-MM-DD'),
@@ -110,7 +110,8 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
         });
         setDataThisYear(resThisYear)
 
-        const resLastYear = await fetchStockData({
+        // wtest check
+        const resLastYear = await fetchStockData<DataItem>({
             dataset: 'TaiwanStockMonthRevenue',
             data_id: id,
             start_date: startDateLastYear?.format('YYYY-MM-DD'),
@@ -128,10 +129,12 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
             setTipDataFailed(tipContent.getDataFailed)
             setData([])
         }
-    }
+    }, [
+        id, startDate, endDate, startDateLastYear, endDateLastYear, token, setDataThisYear, setDataLastYear, setLoaded, setTipDataFailed, setData
+    ])
     useEffect(() => {
         fetchData()
-    }, [startDateLastYear, endDateLastYear])
+    }, [startDateLastYear, endDateLastYear, fetchData])
     const memoizedData = useMemo(() => {
         if (!data) return null;
         return data;
@@ -140,7 +143,16 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
         fetchData()
         setGroup(group)
         setCatg(catg)
-    }, [])
+    }, [fetchData, group, catg, setGroup, setCatg]) // wtest check
+    /* wtest check *
+    useEffect(() => {
+        fetchData()
+    }, [fetchData])
+    useEffect(() => {
+        setGroup(group)
+        setCatg(catg)
+    }, [setGroup, setCatg, group, catg]) // wtest check
+    /* /wtest check */
     
 
     return (

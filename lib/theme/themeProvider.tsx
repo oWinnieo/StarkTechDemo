@@ -5,13 +5,6 @@ import { ReactNode, useMemo } from 'react';
 import { useStore } from '@store/useStore';
 import type { SearchState } from '@store/useStore';
 
-const theme1 = createTheme({
-  palette: {
-    mode: 'light',
-    primary: { main: '#1976d2' },
-    secondary: { main: '#9c27b0' },
-  },
-});
 // const theme2 = createTheme(); // 預設主題
 // const theme = createTheme({
 //     palette: {

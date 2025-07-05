@@ -1,0 +1,7 @@
+@use '@styles/base/color.scss' as color;
+a {
+    @include color.txt-color-2;
+    &:hover {
+        text-decoration: underline;
+    }
+}

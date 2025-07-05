@@ -1,22 +1,16 @@
 'use client'
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, SyntheticEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import {
     TextField,
     Autocomplete,
     CircularProgress,
-    MenuItem,
     InputAdornment,
-    Menu
-    // InputAdornment, Popper, Paper, List, ListItem, ListItemButton, Button, Typography
 } from '@mui/material';
 import {
     CompAlertAutoDismiss
 } from '@/app/components/compAlertAutoDismiss/compAlertAutoDismiss'
-import Alert from '@mui/material/Alert';
-import CheckIcon from '@mui/icons-material/CheckCircle';
 import SearchIcon from '@mui/icons-material/Search';
-import { SelectChangeEvent } from '@mui/material/Select';
 import { fetchStockData } from '@lib/util/getData';
 import { StockInfoItem, tipContent, FetchDataParams } from '@lib/dataConst/index';
 import debounce from 'lodash.debounce';
@@ -40,10 +34,12 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
     const [inputValue, setInputValue] = useState('');
     const [tipForOptions, setTipForOptions] = useState('')
     const [stockInfo, setStockInfo] = useState<StockInfoItem[] | null>(null)
-    const fetchData = async ({ id }: FetchDataParams = {}): Promise<void> => {
+    const fetchData = useCallback(async ({ id }: FetchDataParams = {}): Promise<void> => {
         setLoading(true)
         setTipForOptions('')
-        const res = await fetchStockData({
+
+        // wtest check
+        const res = await fetchStockData<StockInfoItem>({
             dataset: 'TaiwanStockInfo',
             ...(id ? { data_id: id } : {}),
             token: token
@@ -54,10 +50,13 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
                 ...res.data.slice(0, 30)
             ])
         } else {
-            setTipForOptions(res.error)
+            setTipForOptions(res.error ? res.error : '')
             setStockInfo([])
         }
-    }
+    }, [
+        token // wtest check token and useCallback
+    ])
+    
     const onFocusSearchBar = () => {
         fetchData({id: valueSearch})
     }
@@ -69,13 +68,13 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
 
     const debouncedFetch = useMemo(() => debounce((keyword: string) => {
         fetchData({ id: keyword });
-    }, 300), []);
-    const onChangeSearchInput = (event: any, newValue: string) => {
+    }, 300), [fetchData]); // wtest check 72:14  Warning: React Hook useMemo has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+    const onChangeSearchInput = (event: SyntheticEvent, newValue: string) => {
         setInputValue(newValue);      // 更新 UI
         debouncedFetch(newValue);    // 去請求資料
     };
 
-    const onSelectOption = (event: any, selectedValue: string | null) => {
+    const onSelectOption = (event: SyntheticEvent, selectedValue: string | null) => {
         setLoading(true)
         if (!selectedValue) return;
         const stockId = selectedValue.split(' - ')[0];
@@ -87,7 +86,7 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
     useEffect(() => {
         if (!valueSearch) return
         fetchData({id: valueSearch})
-    }, [valueSearch])
+    }, [valueSearch, fetchData]) // wtest check 90:8  Warning: React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
     useEffect(() => {
         return () => {
             debouncedChange.cancel();
@@ -96,7 +95,8 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
     useEffect(() => {
         setLoading(false)
     }, [])
-    const StyledOption = styled('li')(({ className, theme, onClick }) => {
+    const StyledOption = styled('li')(({ theme }) => {
+        // wtest check className ? 是否主題會切換
         return ({
             padding: '8px 12px',
             cursor: 'pointer',
@@ -111,7 +111,7 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
             <Autocomplete
                 freeSolo
                 fullWidth
-                options={(stockInfo ?? []).map((v, i) => `${v.stock_id} - ${v.stock_name}`)}
+                options={(stockInfo ?? []).map(v => `${v.stock_id} - ${v.stock_name}`)}
                 inputValue={inputValue}
                 onInputChange={onChangeSearchInput} 
                 onChange={onSelectOption}
