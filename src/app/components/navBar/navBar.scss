@@ -1,0 +1,12 @@
+@use '@styles/base/reset.scss' as reset;
+@use '@styles/base/color.scss' as color;
+@use '@styles/layouts/layout-main.scss' as layoutMain;
+.compNavBar {
+    height: 50px;
+    border-bottom: 1px solid color.$color-1;
+    .navBar-in {
+        display: flex;
+        justify-items: center;
+        @include layoutMain.layout-area-in;
+    }
+}

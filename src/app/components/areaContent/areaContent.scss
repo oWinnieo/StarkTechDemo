@@ -1,0 +1,5 @@
+@use '@styles/layouts/layout-area.scss' as layoutArea;
+
+.areaContent {
+    @include layoutArea.area-basic;
+}

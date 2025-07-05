@@ -1,0 +1,46 @@
+@use '@styles/layouts/layout-area.scss' as layoutArea;
+@use '@styles/base/color.scss' as color;
+
+.compSearchBar {
+    display: flex;
+    width: 30%;
+    margin: 0 auto;
+    height: 50px;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 5px;
+    .MuiPopper-root {
+        @include layoutArea.area-basic;
+    }
+}
+
+
+.autocomplete-option {
+    padding: 6px 16px;
+    .focus {
+        margin-right: 6px;
+        font-weight: 700;
+        @include color.txt-color-2;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.theme-light {
+    .autocomplete-option {
+        &:hover {
+            @include color.bg-color-1;
+        }
+    }
+}
+
+.theme-dark {
+    .autocomplete-option {
+        &:hover {
+            color: #fa0;
+            // @include color.bg-color-1;
+        }
+    }
+}

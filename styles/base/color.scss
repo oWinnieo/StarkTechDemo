@@ -1,0 +1,18 @@
+$color-1: #dfdfdf;
+$color-white: #fff;
+
+$txt-color-1: #434343;
+@mixin txt-color-1 {
+    color: $txt-color-1;
+}
+$txt-color-2: #0386f4;
+@mixin txt-color-2 {
+    color: $txt-color-2;
+}
+$bg-color-1: #fafafa;
+@mixin bg-color-1 {
+    background: $bg-color-1;
+}
+@mixin bg-white {
+    background: $color-white;
+}

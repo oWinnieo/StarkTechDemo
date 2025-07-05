@@ -1,0 +1,13 @@
+.dataTable {
+    padding-top: 15px;
+    .areaTable {
+        overflow-x: auto;
+    }
+    .areaTip {
+        margin: 15px 0;
+        p {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}

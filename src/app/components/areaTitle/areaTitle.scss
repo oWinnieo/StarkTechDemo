@@ -1,0 +1,9 @@
+@use '@styles/layouts/layout-area.scss' as layoutArea;
+@use '@styles/base/color.scss' as color;
+.areaTitle {
+    @include layoutArea.area-basic;
+    @include color.txt-color-1;
+    .title {
+        font-weight: 700;
+    }
+}

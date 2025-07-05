@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { NavBar } from "@/app/components/navBar/navBar";
+import { MuiThemeProvider } from "@lib/theme/themeProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,12 +24,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const token = process.env.TOKEN
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <MuiThemeProvider>
+          <NavBar token={token} />
+          {children}
+        </MuiThemeProvider>
       </body>
     </html>
   );

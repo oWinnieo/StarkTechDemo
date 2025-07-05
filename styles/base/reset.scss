@@ -1,0 +1,10 @@
+@use '@styles/layouts/layout-area.scss' as layoutArea;
+@use '@styles/base/color.scss' as color;
+
+* {
+    padding: 0;
+    margin: 0;
+}
+button {
+    text-decoration: none;
+}

@@ -1,0 +1,14 @@
+@use '@styles/base/reset.scss' as reset;
+@use '@styles/layouts/layout-main.scss' as layoutMain;
+@use '@styles/base/color.scss' as color;
+
+
+.pageWrap {
+    @include color.bg-color-1;
+    .pageWrap-in {
+        padding: 15px 0;
+        @include color.txt-color-1;
+        @include layoutMain.layout-area-in;
+    }
+}
+    

@@ -1,0 +1,10 @@
+.compRevenue {
+    .areaDate {
+        .areaPicker {
+            display: flex;
+            & > div {
+                margin-right: 15px;
+            }
+        }
+    }
+}
