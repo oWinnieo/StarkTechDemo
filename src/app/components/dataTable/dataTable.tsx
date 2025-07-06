@@ -77,7 +77,7 @@ export const DataTable: React.FC<DataChartProps> = ({ data }) => {
         if (scrollRef.current) {
             scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
         }
-    }, []);
+    }, [data]);
 
     const dataRevenueMonthThisYear = data && data.map(v => v.revenueMonthThisYear)
     const dataRevenueMonthGrowthRageByYear = data && data.map(v => v.revenueMonthGrowthRageByYear)
