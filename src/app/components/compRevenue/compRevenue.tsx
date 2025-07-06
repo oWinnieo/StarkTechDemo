@@ -121,34 +121,35 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
     }, [startDate, endDate])
     const fetchData = useCallback(async () => {
         setLoading(true)
-
-        const resThisYear = await fetchStockData<DataItem>({
-            dataset: 'TaiwanStockMonthRevenue',
-            data_id: id,
-            start_date: startDate?.add(1, 'M')?.format('YYYY-MM-DD'),
-            end_date: endDate?.add(1, 'M')?.format('YYYY-MM-DD'),
-            token: token
-        });
-        setDataThisYear(resThisYear)
-
-        const resLastYear = await fetchStockData<DataItem>({
-            dataset: 'TaiwanStockMonthRevenue',
-            data_id: id,
-            start_date: startDateLastYear?.add(1, 'M').format('YYYY-MM-DD'),
-            end_date: endDateLastYear?.add(1, 'M').format('YYYY-MM-DD'),
-            token: token
-        });
-        setDataLastYear(resLastYear)
-        setLoading(false)
+        Promise.all([
+            fetchStockData<DataItem>({
+                dataset: 'TaiwanStockMonthRevenue',
+                data_id: id,
+                start_date: startDate?.add(1, 'M')?.format('YYYY-MM') + '-01',
+                end_date: endDate?.add(1, 'M')?.format('YYYY-MM') + '-01',
+                token: token
+            }),
+            fetchStockData<DataItem>({
+                dataset: 'TaiwanStockMonthRevenue',
+                data_id: id,
+                start_date: startDateLastYear?.add(1, 'M').format('YYYY-MM') + '-01',
+                end_date: endDateLastYear?.add(1, 'M').format('YYYY-MM') + '-01',
+                token: token
+            })
+        ]).then(([resThisYear, resLastYear]) => {
+            setDataThisYear(resThisYear);
+            setDataLastYear(resLastYear);
+            setLoading(false)
         
-        if (resThisYear.status === 200 && resThisYear.msg === 'success'
-        && resLastYear.status === 200 && resLastYear.msg === 'success') {
-            setLoaded(true)
-            setTipDataFailed('')
-        } else {
-            setTipDataFailed(tipContent.getDataFailed)
-            setData([])
-        }
+            if (resThisYear.status === 200 && resThisYear.msg === 'success'
+            && resLastYear.status === 200 && resLastYear.msg === 'success') {
+                setLoaded(true)
+                setTipDataFailed('')
+            } else {
+                setTipDataFailed(tipContent.getDataFailed)
+                setData([])
+            }
+        })
     }, [
         id, startDate, endDate, startDateLastYear, endDateLastYear, token, setDataThisYear, setDataLastYear, setLoaded, setTipDataFailed, setData
     ])
@@ -169,8 +170,7 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
                     }-01`
             })
         });
-        
-            setData(dataModify)
+        setData(dataModify)
         }
     }, [loaded, dataThisYear, dataLastYear])
     useEffect(() => {

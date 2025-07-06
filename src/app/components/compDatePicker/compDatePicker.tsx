@@ -19,7 +19,9 @@ export const BasicDatePicker: React.FC<BasicDatePickerProps> = ({ name, date, ge
       <DemoContainer components={['DatePicker']}>
         <DatePicker
           label={name}
-          format="YYYY-MM-DD"
+          views={['year', 'month']}
+          openTo="month"
+          format="YYYY-MM"
           value={selectedDate}
           onChange={(newValue) => {
             setSelectedDate(newValue);
