@@ -34,8 +34,9 @@ type CompRevenueProps = {
 export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg, stockInfo }) => {
     const setGroup = useStore((state: SearchState) => state.setGroup);
     const setCatg = useStore((state: SearchState) => state.setCatg);
-    const startDateDefault = dayjs('2024-01-01')
-    const endDateDefault = dayjs('2024-12-31')
+    const endDateDefault = dayjs()
+    const startDateDefault = endDateDefault.subtract(11, 'M')
+    
     const startDateDefaultLastYear = startDateDefault.subtract(1, 'year');
     const endDateDefaultLastYear = endDateDefault.subtract(1, 'year');
     
@@ -75,19 +76,54 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
             setEndDateLastYear(endDate.subtract(1, 'year'))
         }
     }
+    type CalcRevenueParams = {
+        index: number,
+        dataThisYear: ApiResponse,
+        dataLastYear?: ApiResponse
+    }
+    const calcRevenueMonthGrowthRageByYear = ({ index, dataThisYear, dataLastYear }: CalcRevenueParams) => {
+        let result
+        if (dataThisYear.data?.[index] && dataLastYear?.data?.[index]
+            && dataThisYear.data?.[index].revenue !== 0
+            && dataLastYear.data?.[index].revenue !== 0) {
+            result = Math.round(
+                ((dataThisYear.data[index].revenue - dataLastYear.data[index].revenue) / dataLastYear.data[index].revenue) * 10000
+            ) / 100
+        } else if (dataThisYear.data?.[index]?.revenue === 0 && dataLastYear?.data?.[index]?.revenue === 0) {
+            result = 0
+        } else if (dataThisYear.data?.[index]?.revenue === 0) {
+            result = -100
+        } else if (dataLastYear?.data?.[index]?.revenue === 0) {
+            result = 100
+        } else if (!dataThisYear.data?.[index]) {
+            result = '無'
+        } else {
+            result = 100
+        }
+        return result
+    }
+    const calcRevenueMonthThisYear = ({ index, dataThisYear }: CalcRevenueParams) => {
+        let result
+        if (dataThisYear.data[index]?.revenue) {
+            result = formatToThousandsWithCommas(dataThisYear.data[index].revenue)
+        } else if (dataThisYear.data[index]?.revenue === 0) {
+            result = 0
+        } else {
+            result = '無'
+        }
+        return result
+    }
 
     
     useEffect(() => {
         if (loaded && dataThisYear?.data && dataLastYear?.data) {
-            const dataModify: EnhancedDataItem[] = dataThisYear.data.map((v: DataItem, index: number) => {
+            const dataModify: EnhancedDataItem[] = dataLastYear.data.map((v: DataItem, index: number) => {
                 return ({
-                revenueMonthThisYear: formatToThousandsWithCommas(v.revenue),
-                revenueMonthGrowthRageByYear: dataLastYear.data[index] && dataLastYear.data[index]?.revenue !== 0 ? (
-                    Math.round(
-  ((v.revenue - dataLastYear.data[index].revenue) / dataLastYear.data[index].revenue) * 10000
-) / 100
-                ) : 100,
-                ...v,
+                revenueMonthThisYear: calcRevenueMonthThisYear({ index, dataThisYear }),
+                revenueMonthGrowthRageByYear: calcRevenueMonthGrowthRageByYear({ index, dataThisYear, dataLastYear }),
+                ...dataThisYear.data[index],
+                revenue_year: dataThisYear.data[index]?.revenue_year ? dataThisYear.data[index].revenue_year : dataLastYear.data[index].revenue_year + 1,
+                revenue_month: dataThisYear.data[index]?.revenue_month ? dataThisYear.data[index]?.revenue_month : dataLastYear.data[index]?.revenue_month,
             })
         });
             setData(dataModify)

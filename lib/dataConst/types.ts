@@ -43,8 +43,8 @@ export type FetchDataParams = {
 };
 
 export type EnhancedDataItem = DataItem & {
-    revenueMonthThisYear?: string;
-    revenueMonthGrowthRageByYear?: number;
+    revenueMonthThisYear?: string | number;
+    revenueMonthGrowthRageByYear?: string | number;
 };
 
 export type paletteItem = {
