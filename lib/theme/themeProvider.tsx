@@ -5,16 +5,8 @@ import { ReactNode, useMemo } from 'react';
 import { useStore } from '@store/useStore';
 import type { SearchState } from '@store/useStore';
 
-// const theme2 = createTheme(); // 預設主題
-// const theme = createTheme({
-//     palette: {
-//         mode: currentMode
-//     }
-// }); // 預設主題
-
-
 export const MuiThemeProvider = ({ children }: { children: ReactNode }) => {
-    const mode = useStore((state: SearchState) => state.mode); // 來自 zustand
+    const mode = useStore((state: SearchState) => state.mode);
     const theme = useMemo(() => createTheme({
         palette: {
         mode,

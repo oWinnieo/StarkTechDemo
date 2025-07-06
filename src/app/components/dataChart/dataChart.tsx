@@ -48,8 +48,8 @@ export const DataChart: React.FC<DataChartProps> = ({ data, stockInfo }) => {
                         axisPointer: {
                             type: 'cross',
                         },
-                        formatter: function (params: TooltipParam[]) { // wtest check
-                            const date = params[0].axisValue; // x軸的值，如 '2024/1'
+                        formatter: function (params: TooltipParam[]) {
+                            const date = params[0].axisValue;
                             const revenue = params.find(p => p.seriesName === tip1)?.data ?? 0;
                             const growth = params.find(p => p.seriesName === tip2)?.data ?? 0;
 
@@ -64,7 +64,6 @@ export const DataChart: React.FC<DataChartProps> = ({ data, stockInfo }) => {
                     legend: {
                         top: 30,
                         data: [tip1, tip2],
-                        // const isDark = theme.palette.mode === 'dark';
                         textStyle: {
                             color: theme && theme.palette && theme?.palette?.mode === 'dark' ? colorTxtDark : colorTxtLight,
                             fontSize: 16,
@@ -80,8 +79,7 @@ export const DataChart: React.FC<DataChartProps> = ({ data, stockInfo }) => {
                             name: '每月營收',
                             position: 'left',
                             axisLabel: {
-                                formatter: (val: number) => `${(val / 1000).toLocaleString()}`, // 轉為千元
-                                // revenueMonthThisYear
+                                formatter: (val: number) => `${(val / 1000).toLocaleString()}`,
                             },
                         },
                         {
@@ -89,7 +87,7 @@ export const DataChart: React.FC<DataChartProps> = ({ data, stockInfo }) => {
                             name: '年增率',
                             position: 'right',
                             axisLabel: {
-                                formatter: '{value} %', // 显示百分号
+                                formatter: '{value} %',
                             },
                         },
                     ],
@@ -108,7 +106,6 @@ export const DataChart: React.FC<DataChartProps> = ({ data, stockInfo }) => {
                         },
                     ],
                 });
-                // 组件卸载时销毁实例
                 return () => chartInstance.dispose();
             }
         },
@@ -116,12 +113,11 @@ export const DataChart: React.FC<DataChartProps> = ({ data, stockInfo }) => {
     )
     useEffect(() => {
         chartDraw()
-    }, [data, chartDraw]); // wtest check 110:8  Warning: React Hook useEffect has a missing dependency: 'chartDraw'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+    }, [data, chartDraw]);
     useEffect(() => {
         chartDraw()
     }, [theme.palette.mode, chartDraw]);
     if (!data) return false
-    // return ;
 
     return (
         <div className="dataChart">

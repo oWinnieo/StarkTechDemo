@@ -38,7 +38,6 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
         setLoading(true)
         setTipForOptions('')
 
-        // wtest check
         const res = await fetchStockData<StockInfoItem>({
             dataset: 'TaiwanStockInfo',
             ...(id ? { data_id: id } : {}),
@@ -54,7 +53,7 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
             setStockInfo([])
         }
     }, [
-        token // wtest check token and useCallback
+        token
     ])
     
     const onFocusSearchBar = () => {
@@ -62,16 +61,16 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
     }
     const debouncedChange = useMemo(() => 
         debounce((val: string) => {
-            setValueSearch(val);  // 更新 input 狀態
+            setValueSearch(val);
         }, 300)
     , []);
 
     const debouncedFetch = useMemo(() => debounce((keyword: string) => {
         fetchData({ id: keyword });
-    }, 300), [fetchData]); // wtest check 72:14  Warning: React Hook useMemo has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+    }, 300), [fetchData]);
     const onChangeSearchInput = (event: SyntheticEvent, newValue: string) => {
-        setInputValue(newValue);      // 更新 UI
-        debouncedFetch(newValue);    // 去請求資料
+        setInputValue(newValue);
+        debouncedFetch(newValue);
     };
 
     const onSelectOption = (event: SyntheticEvent, selectedValue: string | null) => {
@@ -86,7 +85,7 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
     useEffect(() => {
         if (!valueSearch) return
         fetchData({id: valueSearch})
-    }, [valueSearch, fetchData]) // wtest check 90:8  Warning: React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+    }, [valueSearch, fetchData])
     useEffect(() => {
         return () => {
             debouncedChange.cancel();
@@ -96,7 +95,6 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
         setLoading(false)
     }, [])
     const StyledOption = styled('li')(({ theme }) => {
-        // wtest check className ? 是否主題會切換
         return ({
             padding: '8px 12px',
             cursor: 'pointer',
@@ -115,9 +113,6 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
                 inputValue={inputValue}
                 onInputChange={onChangeSearchInput} 
                 onChange={onSelectOption}
-                // onChange={(event, selectedValue) => {
-                    
-                // }} wtest
                 loading={loading}
                 onFocus={onFocusSearchBar}
                 noOptionsText={loading ?
@@ -147,7 +142,6 @@ export const CompSearchBar: React.FC<SearchBarProps> = ({ token }) => {
                         sx={{
                             '& .MuiInputBase-root': {
                             backgroundColor: theme && theme.palette && theme?.palette?.mode === 'dark' ? '#2c2c2c' : '#fff',
-                            // '#f5f5f5',
                             padding: '4px 8px',
                             height: '2.5em',
                             },

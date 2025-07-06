@@ -27,20 +27,3 @@
         cursor: pointer;
     }
 }
-
-.theme-light {
-    .autocomplete-option {
-        &:hover {
-            @include color.bg-color-1;
-        }
-    }
-}
-
-.theme-dark {
-    .autocomplete-option {
-        &:hover {
-            color: #fa0;
-            // @include color.bg-color-1;
-        }
-    }
-}

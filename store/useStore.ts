@@ -13,7 +13,6 @@ export type SearchState = {
   toggleMode: () => void;
 };
 
-// export 
 const store = create<SearchState>((set, get) => ({
   token: undefined,
   group: undefined,
@@ -26,8 +25,6 @@ const store = create<SearchState>((set, get) => ({
     set({
       mode: get().mode === 'light' ? 'dark' : 'light',
     }),
-  // toggleMode: () =>
-    // set({ mode: get().mode === 'light' ? 'dark' : 'light' }),
 }));
 
 export const useStore = <T>(selector: (state: SearchState) => T): T => store(selector);

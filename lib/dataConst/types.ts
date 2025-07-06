@@ -23,20 +23,6 @@ export interface StockInfoResponse {
   data: StockInfoItem[];
 }
 
-// export interface DataItem {
-//   country: string;
-//   date: string;
-//   revenue: number;
-//   revenue_month: number;
-//   revenue_year: number;
-//   stock_id: string;
-// }
-
-// export interface EnhancedDataItem extends DataItem {
-//   revenueMonthThisYear: string;  // formatToThousandsWithCommas 返回字符串
-//   revenueMonthGrowthRageByYear: number;
-// }
-
 export type ApiResponse = {
   status: number;
   msg: string;
@@ -53,17 +39,13 @@ export type DateValidParams = {
 };
 
 export type FetchDataParams = {
-  id?: string; // 可為 string，也可以不傳（undefined）
+  id?: string;
 };
-
-
-
 
 export type EnhancedDataItem = DataItem & {
     revenueMonthThisYear?: string;
     revenueMonthGrowthRageByYear?: number;
 };
-
 
 export type paletteItem = {
     mode: 'light' | 'dark';

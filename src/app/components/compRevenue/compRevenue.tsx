@@ -19,6 +19,7 @@ import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/CheckCircle';
 import dayjs, { Dayjs } from 'dayjs';
 import CircularProgress from '@mui/material/CircularProgress';
+import CheckIconErrorOutline from '@mui/icons-material/ErrorOutline';
 import { useStore, SearchState } from '@store/useStore';
 import './compRevenue.scss'
 
@@ -82,7 +83,6 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
                 return ({
                 revenueMonthThisYear: formatToThousandsWithCommas(v.revenue),
                 revenueMonthGrowthRageByYear: dataLastYear.data[index] && dataLastYear.data[index]?.revenue !== 0 ? (
-                    // Number(Math.round(((v.revenue - dataLastYear.data[index].revenue) / dataLastYear.data[index].revenue) * 100).toFixed(2))
                     Math.round(
   ((v.revenue - dataLastYear.data[index].revenue) / dataLastYear.data[index].revenue) * 10000
 ) / 100
@@ -98,9 +98,7 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
     }, [startDate, endDate])
     const fetchData = useCallback(async () => {
         setLoading(true)
-        // setData([])
-        // 
-        // wtest check
+
         const resThisYear = await fetchStockData<DataItem>({
             dataset: 'TaiwanStockMonthRevenue',
             data_id: id,
@@ -110,7 +108,6 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
         });
         setDataThisYear(resThisYear)
 
-        // wtest check
         const resLastYear = await fetchStockData<DataItem>({
             dataset: 'TaiwanStockMonthRevenue',
             data_id: id,
@@ -143,17 +140,7 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
         fetchData()
         setGroup(group)
         setCatg(catg)
-    }, [fetchData, group, catg, setGroup, setCatg]) // wtest check
-    /* wtest check *
-    useEffect(() => {
-        fetchData()
-    }, [fetchData])
-    useEffect(() => {
-        setGroup(group)
-        setCatg(catg)
-    }, [setGroup, setCatg, group, catg]) // wtest check
-    /* /wtest check */
-    
+    }, [fetchData, group, catg, setGroup, setCatg])
 
     return (
         <div className="compRevenue">
@@ -198,7 +185,9 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
                         </>
                     ) : <CompTip
                         tip={setTipContent()}
-                    />
+                    >
+                        <CheckIconErrorOutline />
+                    </CompTip>
                 )
             }
         </div>

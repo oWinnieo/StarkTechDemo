@@ -5,9 +5,10 @@ import { tipContent } from '@lib/dataConst/index';
 import { fetchStockData } from '@lib/util/getData';
 import { CompTip } from '@/app/components/compTip/compTip';
 import { CompRevenue } from '@/app/components/compRevenue/compRevenue'
+import CheckIconErrorOutline from '@mui/icons-material/ErrorOutline';
 // import {
 //     StockInfoItem,
-// } from '@lib/dataConst/index'; wtest
+// } from '@lib/dataConst/index';
 
 // type PageSlugProps = {
 //   params: {
@@ -16,22 +17,14 @@ import { CompRevenue } from '@/app/components/compRevenue/compRevenue'
 // };
 
 export default async function PageSlug ({ params }) {
-    // : PageSlugProps wtest
-    // @ts-expect-error 需要忽略類型錯誤，因為 Next.js 目前的 params 類型定義有問題
     const paramsArr = await params
-    // @ts-expect-error 需要忽略類型錯誤，因為 Next.js 目前的 params 類型定義有問題
     const slug = paramsArr.slug
-    // const slug = params.slug as string[];
+
     const [group, id, catg] = slug
 
     const token = process.env.TOKEN
 
-    // wtest check
-    // const fetchData = async () => {
-    //     const res = 
-    //     return res
-    // }
-    const stockInfo = await fetchStockData({ // wtest <StockInfoItem>
+    const stockInfo = await fetchStockData({
             dataset: 'TaiwanStockInfo',
             data_id: id,
             token: token
@@ -58,7 +51,9 @@ export default async function PageSlug ({ params }) {
                     </> :
                     <CompTip
                         tip={tipContent.getDataFailed}
-                    />
+                    >
+                        <CheckIconErrorOutline />
+                    </CompTip>
                 }
             </PageWrap>
         </div>

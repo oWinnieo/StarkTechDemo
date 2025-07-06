@@ -8,6 +8,6 @@ type CompTipProps = {
 export const CompTip: React.FC<CompTipProps>= ({ tip, children }) => {
     return <div className="compTip">
       {children}
-      <p>{tip}</p>
+      <p className="msg">{tip}</p>
     </div>
 }

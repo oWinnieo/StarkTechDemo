@@ -4,7 +4,7 @@ import path from 'path';
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   /* config options here */
-  basePath: '/demo',
+  basePath: '',
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },

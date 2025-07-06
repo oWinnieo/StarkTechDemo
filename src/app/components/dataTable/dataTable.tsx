@@ -98,8 +98,6 @@ export const DataTable: React.FC<DataChartProps> = ({ data }) => {
     const rows: TableRowItem[] = [
         createData('每月營收', ...((dataRevenueMonthThisYear ?? []).filter((v): v is string => v !== undefined))),
         createData('單月營收年增率(%)', ...((dataRevenueMonthGrowthRageByYear ?? []).filter((v): v is number => v !== undefined))),
-        // createData('每月營收', ...(dataRevenueMonthThisYear ?? [])),
-        // createData('單月營收年增率(%)', ...(dataRevenueMonthGrowthRageByYear ?? []))
     ];
     return (
         <div className="dataTable">

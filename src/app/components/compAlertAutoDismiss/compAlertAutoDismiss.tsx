@@ -2,20 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, AlertColor, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-// import CheckIcon from '@mui/icons-material/Check';
-// import Alert from '@mui/material/Alert';
-// import CheckIcon Success from '@mui/icons-material/CheckCircle';
 import CheckIconCheckCircleOutline from '@mui/icons-material/CheckCircleOutline'; // success
-import CheckIconInfoOutline from '@mui/icons-material/InfoOutline';
-import CheckIconWarningAmber from '@mui/icons-material/WarningAmber';
-import CheckIconErrorOutline from '@mui/icons-material/ErrorOutline';
+import CheckIconInfoOutline from '@mui/icons-material/InfoOutline'; // info
+import CheckIconWarningAmber from '@mui/icons-material/WarningAmber'; // warning
+import CheckIconErrorOutline from '@mui/icons-material/ErrorOutline'; // error
 
 export const CompAlertAutoDismiss = ({ message, duration = 3000, severity }: { message: string; duration?: number; severity: AlertColor; }) => {
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => setOpen(false), duration);
-    return () => clearTimeout(timer); // 清理計時器
+    return () => clearTimeout(timer);
   }, [duration]);
 
   if (!open) return null;
@@ -47,10 +44,10 @@ export const CompAlertAutoDismiss = ({ message, duration = 3000, severity }: { m
         }
         sx={{
             position: 'fixed',
-            top: '50px', // 或 bottom: '1rem'
+            top: '50px',
             left: '50%',
             transform: 'translateX(-50%)',
-            zIndex: 9999, // 非常大，確保最上層
+            zIndex: 9999,
         }}>
       {message}
     </Alert>

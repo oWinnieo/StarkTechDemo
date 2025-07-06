@@ -12,9 +12,9 @@ type NavBarProps = {
 export const NavBar: React.FC<NavBarProps> = ({ token }) => {
     return (<div className="compNavBar">
         <div className="navBar-in">
-            <CompThemeToggle />
             <CompSearchBar
                 token={token} />
+            <CompThemeToggle />
         </div>
     </div>)
     
