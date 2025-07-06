@@ -7,6 +7,7 @@
     .navBar-in {
         display: flex;
         justify-items: center;
+        position: relative;
         @include layoutMain.layout-area-in;
     }
 }
