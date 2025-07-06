@@ -115,20 +115,7 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
     }
 
     
-    useEffect(() => {
-        if (loaded && dataThisYear?.data && dataLastYear?.data) {
-            const dataModify: EnhancedDataItem[] = dataLastYear.data.map((v: DataItem, index: number) => {
-                return ({
-                revenueMonthThisYear: calcRevenueMonthThisYear({ index, dataThisYear }),
-                revenueMonthGrowthRageByYear: calcRevenueMonthGrowthRageByYear({ index, dataThisYear, dataLastYear }),
-                ...dataThisYear.data[index],
-                revenue_year: dataThisYear.data[index]?.revenue_year ? dataThisYear.data[index].revenue_year : dataLastYear.data[index].revenue_year + 1,
-                revenue_month: dataThisYear.data[index]?.revenue_month ? dataThisYear.data[index]?.revenue_month : dataLastYear.data[index]?.revenue_month,
-            })
-        });
-            setData(dataModify)
-        }
-    }, [loaded, dataThisYear, dataLastYear])
+    
     useEffect(() => {
         dateValidation({ startDate, endDate })
     }, [startDate, endDate])
@@ -165,6 +152,27 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
     }, [
         id, startDate, endDate, startDateLastYear, endDateLastYear, token, setDataThisYear, setDataLastYear, setLoaded, setTipDataFailed, setData
     ])
+    useEffect(() => {
+        if (loaded && dataThisYear?.data && dataLastYear?.data) {
+            const dataModify: EnhancedDataItem[] = dataLastYear.data.map((v: DataItem, index: number) => {
+                return ({
+                revenueMonthThisYear: calcRevenueMonthThisYear({ index, dataThisYear }),
+                revenueMonthGrowthRageByYear: calcRevenueMonthGrowthRageByYear({ index, dataThisYear, dataLastYear }),
+                ...dataThisYear.data[index],
+                revenue_year: dataThisYear.data[index]?.revenue_year ? dataThisYear.data[index].revenue_year : dataLastYear.data[index].revenue_year + 1,
+                revenue_month: dataThisYear.data[index]?.revenue_month ? dataThisYear.data[index]?.revenue_month : dataLastYear.data[index]?.revenue_month,
+                date: dataThisYear.data[index]?.date ?
+                    dataThisYear.data[index]?.date :
+                    `${dataLastYear.data[index].revenue_year + 1}-${dataLastYear.data[index]?.revenue_month < 9 ?
+                        ('0' + (dataLastYear.data[index]?.revenue_month + 1)) :
+                        (dataLastYear.data[index]?.revenue_month + 1)
+                    }-01`
+            })
+        });
+        
+            setData(dataModify)
+        }
+    }, [loaded, dataThisYear, dataLastYear])
     useEffect(() => {
         fetchData()
     }, [startDateLastYear, endDateLastYear, fetchData])
