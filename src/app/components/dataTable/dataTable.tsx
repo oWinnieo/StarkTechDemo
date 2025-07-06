@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useTheme } from '@mui/material';
+import dayjs from 'dayjs';
 import {
     EnhancedDataItem,
     ThemeItem,
@@ -16,30 +17,13 @@ import {
 } from '@lib/dataConst/index'
 import './dataTable.scss'
 
-
-
-
 type DataChartProps = {
     data: EnhancedDataItem[] | null;
     theme?: ThemeItem | null;
 };
 
-
-
-
-
 function createData(label: string, ...values: number[] | string[]): TableRowItem {
     return { label, values };
-}
-
-
-type DateFormatProps = {
-  dateStr: string;
-};
-
-const dateFormat = ({ dateStr }: DateFormatProps): string => {
-    const [year, month] = dateStr.split('-')
-    return `${year}${month}`
 }
 
 const TableCellTitle: React.FC<DataChartProps> = ({ data, theme }) => {
@@ -57,9 +41,11 @@ const TableCellTitle: React.FC<DataChartProps> = ({ data, theme }) => {
                 }}
             >年度月份</TableCell>
             {
-                data.map((v, index) => (
-                    <TableCell key={`tableCell-${index}`} align="right">{dateFormat({ dateStr: v.date })}</TableCell>
-                ))
+                data.map((v, index) => {
+                    return (
+                        <TableCell key={`tableCell-${index}`} align="right">{dayjs(v.date).subtract(1, 'M').format('YYYYMM')}</TableCell>
+                    )
+                })
             }
         </>
     )

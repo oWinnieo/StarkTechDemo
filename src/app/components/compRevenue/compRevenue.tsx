@@ -102,8 +102,8 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
         const resThisYear = await fetchStockData<DataItem>({
             dataset: 'TaiwanStockMonthRevenue',
             data_id: id,
-            start_date: startDate?.format('YYYY-MM-DD'),
-            end_date: endDate?.format('YYYY-MM-DD'),
+            start_date: startDate?.add(1, 'M')?.format('YYYY-MM-DD'),
+            end_date: endDate?.add(1, 'M')?.format('YYYY-MM-DD'),
             token: token
         });
         setDataThisYear(resThisYear)
@@ -111,8 +111,8 @@ export const CompRevenue: React.FC<CompRevenueProps> = ({ token, id, group, catg
         const resLastYear = await fetchStockData<DataItem>({
             dataset: 'TaiwanStockMonthRevenue',
             data_id: id,
-            start_date: startDateLastYear?.format('YYYY-MM-DD'),
-            end_date: endDateLastYear?.format('YYYY-MM-DD'),
+            start_date: startDateLastYear?.add(1, 'M').format('YYYY-MM-DD'),
+            end_date: endDateLastYear?.add(1, 'M').format('YYYY-MM-DD'),
             token: token
         });
         setDataLastYear(resLastYear)
